@@ -30,6 +30,13 @@ public abstract class KnownDefaultBooleanContext<T extends ThreeValued>
         implements BooleanValuedContext<T> {
     
     /**
+     * The javadoc compiler doesn't like it if I don't explicitly write this out and put a comment here;
+     * however, this function doesn't do anything beyond implicitly calling the {@link Object#Object()}
+     * constructor that all constructors directly or indirectly call :/
+     */
+    protected KnownDefaultBooleanContext() {}
+    
+    /**
      * Creates a {@link KnownDefaultBooleanContext} using the given values.
      *
      * @param   trueTernary the value representing {@code true}
@@ -77,6 +84,13 @@ public abstract class KnownDefaultBooleanContext<T extends ThreeValued>
         }
         
         return new KnownDefaultBooleanContext<T>() {
+            /**
+             * Returns the boolean value of the given {@link ThreeValued} argument, according to this context.
+             *
+             * @param   value   the Three-Valued object to get the {@code boolean} value of
+             *
+             * @return  the {@code boolean} value of {@code value}
+             */
             @Override
             @Pure
             public boolean booleanValue(
@@ -99,9 +113,10 @@ public abstract class KnownDefaultBooleanContext<T extends ThreeValued>
     /**
      * {@inheritDoc}
      *
-     * @implSpec This method should line up with {@link ThreeValued#booleanValue()} in the way that
-     * {@link java.util.Objects#hashCode(Object) Objects.hashCode} lines up with {@link Object#hashCode()};
-     * that is, as if it were allowing a {@code null} receiver.
+     * <p>Implementation Requirements: This method should line up with {@link ThreeValued#booleanValue()}
+     *                                  in the way that {@link java.util.Objects#hashCode(Object)
+     *                                  Objects.hashCode} lines up with {@link Object#hashCode()};
+     *                                  that is, as if it were allowing a {@code null} receiver.</p>
      */
     @Override
     @Pure

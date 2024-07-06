@@ -44,10 +44,10 @@ public interface QuadFunction<T, U, V, W, R> {
      *
      * @param   after   the function that maps the result of this function to the output of the result function
      *
-     * @return  a new {@code QuadFunction} that takes the result of the first {@link #apply}, and then applies that
+     * @return  a new {@link QuadFunction} that takes the result of the first {@link #apply}, and then applies that
      *          as the input for {@code after}
      *
-     * @param   <S> the result type of {@code after} and of the returned {@link QuadFunction}
+     * @param   <S> the result type of {@code after} and of the returned {@code QuadFunction}
      *
      * @throws  NullPointerException    if {@code after == null}
      */

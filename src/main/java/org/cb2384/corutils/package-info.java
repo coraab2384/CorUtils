@@ -1,13 +1,13 @@
 /**
- * <h5>Three static utility classes which can have wide utility:</h5>
+ * <b>Three static utility classes which can have wide utility:</b>
  *
  * <p>{@link org.cb2384.corutils.StringUtils StringUtils} has some utilities
  * regarding {@link java.lang.String String}s.</p>
  *
  * <p>{@link org.cb2384.corutils.Arrayz Arrayz} has some additions to {@link java.util.Arrays Arrays}, a function
- * similar to {@link java.lang.System#arraycopy(java.lang.Object, int, java.lang.Object, int, int)
+ * similar to {@link java.lang.System#arraycopy(Object, int, Object, int, int)
  * System.arrayCopy} that also maps in between, though is therefore not as fast, as well
- * as some more forms of {@link java.lang.reflect.Array#newInstance(java.lang.Class, int)
+ * as some more forms of {@link java.lang.reflect.Array#newInstance(Class, int)
  * Array.newInstance(Class, int)}. </p>
  *
  * <p>{@link org.cb2384.corutils.NullnessUtils NullnessUtils} holds functions useful for dealing with

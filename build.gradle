@@ -2,8 +2,13 @@ plugins {
     id 'java'
 }
 
-group = 'org.cb2384'
-version = '1.0-SNAPSHOT'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+group = 'org.cb2384.corutils'
+version = '1.1-Beta'
 
 repositories {
     mavenCentral()
@@ -12,6 +17,12 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // https://mvnrepository.com/artifact/org.checkerframework/checker-qual
+    implementation group: 'org.checkerframework', name: 'checker-qual', version: '3.43.0'
+
+    // https://mvnrepository.com/artifact/org.checkerframework/jdk8
+    implementation group: 'org.checkerframework', name: 'jdk8', version: '3.3.0'
 }
 
 test {

@@ -16,12 +16,13 @@ import org.checkerframework.dataflow.qual.*;
 public interface ThreeValued {
     
     /**
-     * This is the single specified operation of this interface. It determines the mapping between
+     * <p>This is the single specified operation of this interface. It determines the mapping between
      * a nullable {@link Boolean} instance and the Three-Valued implementation. It would seem advisable,
-     * though is not required, that the implementing class be an {@link Enum} with three constants.
+     * though is not required, that the implementing class be an {@link Enum} with three constants.</p>
      *
-     * @implSpec    It should return {@code true} for the value that represents {@code true},
-     *              {@code false} for the value that represents false, and {@code null} for the third value.
+     * <p>Implementation Requirements:  It should return {@code true} for the value that represents
+     *                                  {@code true}, {@code false} for the value that represents
+     *                                  {@code false}, and {@code null} for the third value.</p>
      *
      * @return  {@link Boolean#TRUE}, {@link Boolean#FALSE}, or {@code null} based on the value of this
      *          Three-Valued class.

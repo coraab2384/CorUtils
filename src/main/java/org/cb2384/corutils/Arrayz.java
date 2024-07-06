@@ -3,6 +3,7 @@ package org.cb2384.corutils;
 import java.lang.reflect.Array;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.stream.Collector;
 
 import org.checkerframework.checker.index.qual.*;
 import org.checkerframework.checker.nullness.qual.*;
@@ -12,7 +13,7 @@ import org.checkerframework.dataflow.qual.*;
  * <p>Additional array-based utility methods. This includes methods built upon {@link Array#newInstance(Class, int)}
  * as well as array mappers (non-stream versions that are essentially equivalent
  * {@link java.util.Arrays#stream(Object[]) Arrays.stream(I[])}{@link java.util.stream.Stream#map(Function)
- * .map(Function<I, O>)}{@link java.util.stream.Stream#toArray .toArray} with varying versions of
+ * .map(Function&lt;I, O&gt;)}{@link java.util.stream.Stream#toArray .toArray} with varying versions of
  * {@link java.util.stream.Stream#toArray toArray} depending on which particular function. (Though
  * unlike {@link java.util.stream.Stream Stream}s, none are late-binding.)</p>
  *
@@ -49,7 +50,7 @@ public class Arrayz {
      *
      * @param   <A> the class that the array will be cast as when returned
      *
-     * @throws  NegativeArraySizeException  if {code length < 0}
+     * @throws  NegativeArraySizeException  if {@code length < 0}
      */
     @SideEffectFree
     public static <A> @Nullable A@NonNull[] unCheckedArrayGenerator(
@@ -89,8 +90,8 @@ public class Arrayz {
     
     /**
      * Essentially calls {@link Array#newInstance(Class, int)
-     * Array.newInstance(}{@code arrayClass}{@link Class#componentType() .componentType()}{@code , length}{@link
-     * Array#newInstance(Class, int) )}
+     * Array.newInstance(}{@code arrayClass}{@link Class#getComponentType() .getComponentType()}{@code
+     * , length}{@link Array#newInstance(Class, int) )}
      * but also casts the result as an array of the given class.
      * Note that class {@code A} is implemented as a raw class,
      * so re-casting will be required again if the class {@code A} has type parameters.
@@ -112,13 +113,13 @@ public class Arrayz {
             @NonNull Class<A[]> arrayClass,
             @NonNegative int length
     ) {
-        return (A[]) Array.newInstance(arrayClass.componentType(), length);
+        return (A[]) Array.newInstance(arrayClass.getComponentType(), length);
     }
     
     /**
      * Essentially calls {@link Array#newInstance(Class, int)
      * Array.newInstance(}{@code seedArray}{@link Class#getClass() .getClass()}{@link
-     * Class#componentType() .componentType()}{@code , length}{@link Array#newInstance(Class, int) )}
+     * Class#getComponentType() .getComponentType()}{@code , length}{@link Array#newInstance(Class, int) )}
      * but also casts the result as an array of the given class.
      * Note that class {@code A} is implemented as a raw class,
      * so re-casting will be required again if the class {@code A} has type parameters.
@@ -140,14 +141,14 @@ public class Arrayz {
             @NonNegative int length,
             @Nullable A@NonNull[] seedArray
     ) {
-        return (A[]) Array.newInstance(seedArray.getClass().componentType(), length);
+        return (A[]) Array.newInstance(seedArray.getClass().getComponentType(), length);
     }
     
     /**
      * Maps the elements of the first argument to a new {@code Object[]} using the function
-     * of the second argument. Essentially {@link java.util.Arrays#stream(T[])
+     * of the second argument. Essentially {@link java.util.Arrays#stream(Object[])
      * Arrays.stream(}{@code source}{@link
-     * java.util.Arrays#stream(T[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * java.util.Arrays#stream(Object[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
      * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toArray() .toArray()},
      * though not actually utilizing streams, nor late-binding.
      *
@@ -158,13 +159,13 @@ public class Arrayz {
      * @return  an {@code Object[]} containing the results of the original array when the
      *          given function is applied
      *
-     * @param   <T> the type of the input array
+     * @param   <A> the type of the input array
      *
      * @throws  NullPointerException    if either argument is null
      */
-    public static <T> @PolyNull Object@NonNull[] mapArray(
-            T@NonNull[] source,
-            @NonNull Function<? super T, @PolyNull ?> mapper
+    public static <A> @PolyNull Object@NonNull[] mapArray(
+            A@NonNull[] source,
+            @NonNull Function<? super A, @PolyNull ?> mapper
     ) {
         int length = source.length;
         Object[] res = new Object[length];
@@ -174,9 +175,9 @@ public class Arrayz {
     
     /**
      * Maps the elements of the first argument, from 0 to {@code length}, to a new {@code Object[]}
-     * using the function of the second argument. Essentially {@link java.util.Arrays#stream(T[], int, int)
+     * using the function of the second argument. Essentially {@link java.util.Arrays#stream(Object[], int, int)
      * Arrays.stream(}{@code source, 0, }{@link Math#min(int, int) Math.min(}{@code length, source.length}{@link
-     * Math#min(int, int) )}{@link java.util.Arrays#stream(T[], int, int) )}{@link
+     * Math#min(int, int) )}{@link java.util.Arrays#stream(Object[], int, int) )}{@link
      * java.util.stream.Stream#map(Function) .map(}{@code mapper}{@link
      * java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toArray() .toArray()},
      * though not actually utilizing streams, nor late-binding.
@@ -191,15 +192,15 @@ public class Arrayz {
      * @return  an {@code Object[]} containing the results of the original array when the
      *          given function is applied, plus possibly extra nulls if {@code length > source.length}
      *
-     * @param   <T> the type of the input array
+     * @param   <A> the type of the input array
      *
      * @throws  NullPointerException    if either of the first two arguments is null
      *
      * @throws  NegativeArraySizeException  if {@code length < 0}
      */
-    public static <T> @Nullable Object@NonNull[] mapArray(
-            @PolyNull T@NonNull[] source,
-            @NonNull Function<@PolyNull ? super T, ?> mapper,
+    public static <A> @Nullable Object@NonNull[] mapArray(
+            @PolyNull A@NonNull[] source,
+            @NonNull Function<@PolyNull ? super A, ?> mapper,
             @NonNegative int length
     ) {
         int copyLength = Math.min(length, source.length);
@@ -230,7 +231,7 @@ public class Arrayz {
      * @return  an {@code Object[]} of the indicated length, storing the mapping results in
      *          the indicated locations
      *
-     * @param   <T> the type of the input array
+     * @param   <A> the type of the input array
      *
      * @throws  NullPointerException    if {@code source == null} or {@code mapper == null}
      *
@@ -242,12 +243,12 @@ public class Arrayz {
      *
      * @throws  NegativeArraySizeException  if {@code resultLength < 0}
      */
-    public static <T> @PolyNull Object@NonNull[] mapArray(
-            T@NonNull[] source,
+    public static <A> @PolyNull Object@NonNull[] mapArray(
+            A@NonNull[] source,
             @NonNegative @LTLengthOf("source") int sourceFromIndex,
             @NonNegative @LTEqLengthOf("source") int sourceToIndex,
             @NonNegative int resultFromIndex,
-            @NonNull Function<? super T, @PolyNull ?> mapper,
+            @NonNull Function<? super A, @PolyNull ?> mapper,
             @NonNegative int resultLength
     ) {
         Object[] res = new Object[resultLength];
@@ -258,8 +259,8 @@ public class Arrayz {
     /**
      * Maps the elements of the first argument to an array created using the
      * given generator function in the second argument and the length of the fourth, using the mapping function
-     * of the third argument. Essentially {@link java.util.Arrays#stream(I[])
-     * Arrays.stream(}{@code source}{@link java.util.Arrays#stream(I[]) )}{@link
+     * of the third argument. Essentially {@link java.util.Arrays#stream(Object[])
+     * Arrays.stream(}{@code source}{@link java.util.Arrays#stream(Object[]) )}{@link
      * java.util.stream.Stream#map(Function) .map(}{@code
      * mapper}{@link java.util.stream.Stream#map(Function) )}{@link
      * java.util.stream.Stream#toArray(IntFunction) .toArray(}{@code generator}{@link
@@ -295,10 +296,10 @@ public class Arrayz {
     /**
      * Maps the elements of the first argument to an array created using the
      * given generator function in the second argument, using the mapping function
-     * of the third argument. Essentially {@link java.util.Arrays#stream(I[], int, int)
+     * of the third argument. Essentially {@link java.util.Arrays#stream(Object[], int, int)
      * Arrays.stream(}{@code source, 0, }{@link Math#min(int, int) Math.min(}{@code length,
      * source.length}{@link Math#min(int, int) )}{@link
-     * java.util.Arrays#stream(I[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * java.util.Arrays#stream(Object[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
      * mapper}{@link java.util.stream.Stream#map(Function) )}{@link
      * java.util.stream.Stream#toArray(IntFunction) .toArray(}{@code generator}{@link
      * java.util.stream.Stream#toArray(IntFunction) )},
@@ -392,11 +393,12 @@ public class Arrayz {
     /**
      * <p>Maps the elements of the first argument to an array created using the
      * class of the third argument, using the mapping function of the
-     * second argument. Essentially {@link java.util.Arrays#stream(I[]) Arrays.stream(}{@code source}{@link
-     * java.util.Arrays#stream(I[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
-     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toList()
-     * .toList()}{@link java.util.List#toArray(O[]) .toArray(}{@code seedArray}{@link
-     * java.util.List#toArray(O[]) )}, though not actually utilizing streams, nor late-binding,
+     * second argument. Essentially {@link java.util.Arrays#stream(Object[]) Arrays.stream(}{@code source}{@link
+     * java.util.Arrays#stream(Object[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#collect(Collector)
+     * .collect(}{@link java.util.stream.Collectors#toList Collectors.toList()}{@link
+     * java.util.stream.Stream#collect(Collector) )}{@link java.util.List#toArray(Object[]) .toArray(}{@code
+     * seedArray}{@link java.util.List#toArray(Object[]) )}, though not actually utilizing streams, nor late-binding,
      * and also without any intermediate {@code List} actually being constructed.</p>
      *
      * <p>Note that if {@code seedArray} is {@code null}, the array that is returned will be an array
@@ -434,18 +436,20 @@ public class Arrayz {
                 () -> unCheckedArrayGenerator(length)
         );
         mapArray(source, res, mapper, 0, length, 0);
+        
         return res;
     }
     
     /**
      * <p>Maps the elements of the first argument to an array created using the
      * class of the fourth argument and length in the third, using the mapping function of the second argument.
-     * Essentially {@link java.util.Arrays#stream(I[], int, int) Arrays.stream(}{@code source, 0, }{@link
+     * Essentially {@link java.util.Arrays#stream(Object[], int, int) Arrays.stream(}{@code source, 0, }{@link
      * Math#min(int, int) Math.min(}{@code length, source.length}{@link Math#min(int, int) )}{@link
-     * java.util.Arrays#stream(I[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
-     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toList()
-     * .toList()}{@link java.util.List#toArray(O[]) .toArray(}{@code seedArray}{@link
-     * java.util.List#toArray(O[]) )}, though not actually utilizing streams, nor late-binding,
+     * java.util.Arrays#stream(Object[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#collect(Collector)
+     * .collect(}{@link java.util.stream.Collectors#toList Collectors.toList()}{@link
+     * java.util.stream.Stream#collect(Collector) )}{@link java.util.List#toArray(Object[]) .toArray(}{@code
+     * seedArray}{@link java.util.List#toArray(Object[]) )}, though not actually utilizing streams, nor late-binding,
      * and also without any intermediate {@code List} actually being constructed.</p>
      *
      * <p>Note that if {@code seedArray} is {@code null}, the array that is returned will be an array
@@ -560,16 +564,17 @@ public class Arrayz {
      * <p>Maps the elements of the first argument into the second, after they are passed through
      * the mapping function of the third argument. If {@code toStoreResults} is a size other than
      * that of {@code source}, a new array is allocated, as if through {@link
-     * #mapArray(I[], Function, O[]) mapArray(}{@code source, mapper, toStoreResults}{@link
-     * #mapArray(I[], Function, O[]) )}, though without the unchecked problems resulting from a {@code null}
+     * #mapArray(Object[], Function, Object[]) mapArray(}{@code source, mapper, toStoreResults}{@link
+     * #mapArray(Object[], Function, Object[]) )}, though without the unchecked problems resulting from a {@code null}
      * array input.</p>
      *
-     * <p>Like that method, this one is also essentially {@link java.util.Arrays#stream(I[])
+     * <p>Like that method, this one is also essentially {@link java.util.Arrays#stream(Object[])
      * Arrays.stream(}{@code source}{@link
-     * java.util.Arrays#stream(I[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
-     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toList()
-     * .toList()}{@link java.util.List#toArray(O[]) .toArray(}{@code toStoreResults}{@link
-     * java.util.List#toArray(O[]) )}, though, again, not actually utilizing streams, nor late-binding,
+     * java.util.Arrays#stream(Object[]) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#collect(Collector)
+     * .collect(}{@link java.util.stream.Collectors#toList Collectors.toList()}{@link
+     * java.util.stream.Stream#collect(Collector) )}{@link java.util.List#toArray(Object[]) .toArray(}{@code
+     * seedArray}{@link java.util.List#toArray(Object[]) )}, though not actually utilizing streams, nor late-binding,
      * and also without any intermediate {@code List} actually being constructed.</p>
      *
      * @param   source  the array with the source elements for the function
@@ -581,7 +586,7 @@ public class Arrayz {
      * @param   mapper  the mapping function
      *
      * @return  an array of the class of the second argument containing the results of the mapping function
-     *          when applied to {@code source} &#8212
+     *          when applied to {@code source} &mdash;
      *          {@code toStoreResults}, if it has the correct length
      *
      * @param   <I> the type of the input array
@@ -605,17 +610,18 @@ public class Arrayz {
      * <p>Maps the elements of the first argument into the second, after they are passed through
      * the mapping function of the third argument. If {@code toStoreResults} is a size other than
      * that of {@code source}, a new array is allocated, as if through {@link
-     * #mapArray(I[], Function, int, O[]) mapArray(}{@code source, mapper, length, toStoreResults}{@link
-     * #mapArray(I[], Function, int, O[]) )}, though without the unchecked problems resulting from a {@code null}
-     * array input.</p>
+     * #mapArray(Object[], Function, int, Object[]) mapArray(}{@code source, mapper, length, toStoreResults}{@link
+     * #mapArray(Object[], Function, int, Object[]) )}, though without the unchecked problems resulting
+     * from a {@code null} array input.</p>
      *
-     * <p>Like that method, this one is also essentially {@link java.util.Arrays#stream(I[], int, int)
+     * <p>Like that method, this one is also essentially {@link java.util.Arrays#stream(Object[], int, int)
      * Arrays.stream(}{@code source, 0, }{@link Math#min(int, int) Math.min(}{@code length,
      * source.length}{@link Math#min(int, int) )}{@link
-     * java.util.Arrays#stream(I[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
-     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#toList()
-     * .toList()}{@link java.util.List#toArray(O[]) .toArray(}{@code toStoreResults}{@link
-     * java.util.List#toArray(O[]) )}, though, again, not actually utilizing streams, nor late-binding,
+     * java.util.Arrays#stream(Object[], int, int) )}{@link java.util.stream.Stream#map(Function) .map(}{@code
+     * mapper}{@link java.util.stream.Stream#map(Function) )}{@link java.util.stream.Stream#collect(Collector)
+     * .collect(}{@link java.util.stream.Collectors#toList Collectors.toList()}{@link
+     * java.util.stream.Stream#collect(Collector) )}{@link java.util.List#toArray(Object[]) .toArray(}{@code
+     * seedArray}{@link java.util.List#toArray(Object[]) )}, though not actually utilizing streams, nor late-binding,
      * and also without any intermediate {@code List} actually being constructed.</p>
      *
      * @param   source  the array with the source elements for the function
@@ -630,7 +636,7 @@ public class Arrayz {
      *                  the length of {@code source}, in which case the leftover entries will be {@code null}
      *
      * @return  an array of the class of the second argument containing the results of the mapping function
-     *          when applied to {@code source} &#8212
+     *          when applied to {@code source} &mdash;
      *          {@code toStoreResults}, if it has the correct length
      *
      * @param   <I> the type of the input array
@@ -793,7 +799,7 @@ public class Arrayz {
      *
      * @param   toVerify    the array whose size is to be verified, and possibly to be replaced
      *
-     * @return  an array with the same class as the given array and length of {@code length} &#8212
+     * @return  an array with the same class as the given array and length of {@code length} &mdash;
      *          {@code toVerify}, if it has the correct length
      *
      * @param   <A> the component class of the array
@@ -820,7 +826,7 @@ public class Arrayz {
      *
      * @param   length  the length of the returned array
      *
-     * @return  an array with the same class as the given array and length of {@code length} &#8212
+     * @return  an array with the same class as the given array and length of {@code length} &mdash;
      *          {@code toVerify}, if it has the correct length
      *
      * @param   <A> the component class of the array

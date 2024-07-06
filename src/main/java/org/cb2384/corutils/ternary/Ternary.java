@@ -20,7 +20,7 @@ import org.checkerframework.dataflow.qual.*;
  * to a {@code boolean} using {@link #booleanValue(boolean)}. This enables a boolean-ish value with
  * an unknown or default-but-not-yet-specified value to be passed around without dealing with
  * {@code null} and with better switch-support than a possibly-empty
- * {@link java.util.Optional Optional<Boolean>}.</p>
+ * {@link java.util.Optional Optional&lt;Boolean&gt;}.</p>
  *
  * <p>When actually-three-valued logic is desired, a {@link ThreeValuedContext} can be created for the
  * Three-Valued logic paradigm desired. {@link KnownDefaultBooleanContext} is provided, but this class
@@ -72,6 +72,16 @@ public enum Ternary
         this.value = value;
     }
     
+    /**
+     * Transforms a {@link Boolean} into a {@link Ternary}; essentially the inverse of
+     * {@link #booleanValue()}.
+     *
+     * @param   value   the {@code boolean} or {@code null} to map to a {@link Ternary}
+     *
+     * @return  {@link #TRUE} for {@link Boolean#TRUE},
+     *          {@link #FALSE} for {@link Boolean#FALSE}, and
+     *          {@link #DEFAULT} for {@code null}
+     */
     @Pure
     public static @NonNull Ternary valueOf(
             @Nullable Boolean value
@@ -113,8 +123,8 @@ public enum Ternary
     }
     
     /**
-     * Essentially equivalent to {@link #valueOf(Boolean)}{@link #not .not()} for input {@code Boolean},
-     * but as one function.
+     * Essentially equivalent to {@link #valueOf(Boolean) valueOf(}{@code that}{@link #valueOf(Boolean) )}{@link
+     * #not .not()}, but as one function.
      *
      * @param   that    the {@link Boolean} value to map the boolean negation of
      *
@@ -305,7 +315,7 @@ public enum Ternary
      * is required. This can be thought of as being {@code ternaryFunction}{@link
      * Function#andThen .andThen(}{@code t -> t}{@link #booleanValue(boolean) .booleanValue(}{@code
      * defaultValue}{@link #booleanValue(boolean) )}{@link Function#andThen )},
-     * though it is in actuality a more streamlined implementation than that.
+     * though it is in actuality somewhat more streamlined.
      *
      * @param   defaultValue    the value to map {@link #DEFAULT} to
      *
@@ -341,6 +351,13 @@ public enum Ternary
             boolean defaultValue
     ) {
         return new KnownDefaultBooleanContext<Ternary>() {
+            /**
+             * Returns the boolean value of the given {@link Ternary} argument, according to this context.
+             *
+             * @param   value   the {@link Ternary} object to get the {@code boolean} value of
+             *
+             * @return  the {@code boolean} value of {@code value}
+             */
             @Override
             @Pure
             public boolean booleanValue(

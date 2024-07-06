@@ -117,12 +117,12 @@ public class NullnessUtils {
     
     /**
      * Returns the first input if it is nonnull, otherwise the second.
-     * Equivalent in effect to {@link Optional#ofNullable(T)
-     * Optional.ofNullable(}{@code input}{@link Optional#ofNullable(T) )}{@link
-     * Optional#orElse(T) .orElse(}{@code defaultOutput}{@link Optional#orElse(T) )}.
-     * Is equivalent to {@link #returnDefaultIfNull(T, Function, T)
+     * Equivalent in effect to {@link Optional#ofNullable(Object)
+     * Optional.ofNullable(}{@code input}{@link Optional#ofNullable(Object) )}{@link
+     * Optional#orElse(Object) .orElse(}{@code defaultOutput}{@link Optional#orElse(Object) )}.
+     * Is equivalent to {@link #returnDefaultIfNull(Object, Function, Object)
      * applyDefaultIfNull(}{@code input, }{@link Function#identity()}{@code , defaultOutput}{@link
-     * #returnDefaultIfNull(T, Function, T) )}.
+     * #returnDefaultIfNull(Object, Function, Object) )}.
      *
      * @deprecated  in favor of the new {@code Objects.requireNonNullElse(obj, defaultObj)} from Java 9
      *
@@ -145,12 +145,13 @@ public class NullnessUtils {
     /**
      * Returns the output of the function on the first input if it is nonnull,
      * otherwise returns the second. If the third argument is to be {@code null},
-     * consider {@link #applyIfNonNull(I, Function)}.
+     * consider {@link #applyIfNonNull(Object, Function)}.
      * The other difference between these two methods is that here the function is encouraged to be
      * side-effect-free, unlike the other wherein side-effects are expected.
-     * Equivalent in effect to {@link Optional#ofNullable(I) Optional.ofNullable(}{@code input}{@link
-     * Optional#ofNullable(I) )}{@link Optional#map(Function) .map(}{@code toGetOutputIfNonNull}{@link
-     * Optional#map(Function) )}{@link Optional#orElse(O) .orElse(}{@code defaultOutput}{@link Optional#orElse(O) )}.
+     * Equivalent in effect to {@link Optional#ofNullable(Object) Optional.ofNullable(}{@code input}{@link
+     * Optional#ofNullable(Object) )}{@link Optional#map(Function) .map(}{@code toGetOutputIfNonNull}{@link
+     * Optional#map(Function) )}{@link Optional#orElse(Object) .orElse(}{@code defaultOutput}{@link
+     * Optional#orElse(Object) )}.
      *
      * @param   input   the input that might be {@code null}
      *
@@ -176,13 +177,13 @@ public class NullnessUtils {
     
     /**
      * Returns the first input; if it is nonnull, runs the generator to get the second.
-     * Equivalent in effect to {@link Optional#ofNullable(T) Optional.ofNullable(}{@code input}{@link
-     * Optional#ofNullable(T) )}{@link Optional#orElseGet(Supplier) .orElseGet(}{@code defaultGenerator}{@link
+     * Equivalent in effect to {@link Optional#ofNullable(Object) Optional.ofNullable(}{@code input}{@link
+     * Optional#ofNullable(Object) )}{@link Optional#orElseGet(Supplier) .orElseGet(}{@code defaultGenerator}{@link
      * Optional#orElseGet(Supplier) )}.
-     * Is equivalent to {@link #returnDefaultIfNull(T, Function, T) applyDefaultIfNull(}{@code input, }{@link
-     * Function#identity()}{@code , defaultGenerator}{@link #returnDefaultIfNull(T, Function, T) )}.
+     * Is equivalent to {@link #returnDefaultIfNull(Object, Function, Object) applyDefaultIfNull(}{@code input, }{@link
+     * Function#identity()}{@code , defaultGenerator}{@link #returnDefaultIfNull(Object, Function, Object) )}.
      *
-     * @deprecated  in favor new {@code Objects.requireNonNullElseGet(obj, supplier)} from Java 9
+     * @deprecated  in favor of the new {@code Objects.requireNonNullElseGet(obj, supplier)} from Java 9
      *
      * @param   input   the input that might be {@code null}
      *
@@ -205,8 +206,8 @@ public class NullnessUtils {
     /**
      * Returns the output of the function on the first input if it is nonnull,
      * otherwise generates a result using the supplier.
-     * Equivalent in effect to {@link Optional#ofNullable(I) Optional.ofNullable(}{@code input}{@link
-     * Optional#ofNullable(I) )}{@link Optional#map(Function) .map(}{@code toGetOutputIfNonNull}{@link
+     * Equivalent in effect to {@link Optional#ofNullable(Object) Optional.ofNullable(}{@code input}{@link
+     * Optional#ofNullable(Object) )}{@link Optional#map(Function) .map(}{@code toGetOutputIfNonNull}{@link
      * Optional#map(Function) )}{@link Optional#orElseGet(Supplier) .orElseGet(}{@code defaultSupplier}{@link
      * Optional#orElseGet(Supplier) )}.
      *
@@ -235,8 +236,8 @@ public class NullnessUtils {
     
     /**
      * Hands the value to the consumer if it is not {@code null}
-     * Equivalent in effect to {@link Optional#ofNullable(T) Optional.ofNullable(}{@code input}{@link
-     * Optional#ofNullable(T) )}{@link Optional#ifPresent .ifPresent(}{@code consumer}{@link
+     * Equivalent in effect to {@link Optional#ofNullable(Object) Optional.ofNullable(}{@code input}{@link
+     * Optional#ofNullable(Object) )}{@link Optional#ifPresent .ifPresent(}{@code consumer}{@link
      * Optional#ifPresent(Consumer) )}.
      *
      * @param   input   the input that might be {@code null}
@@ -261,11 +262,11 @@ public class NullnessUtils {
      * side-effects while still returning something, such as {@link Map#put(Object, Object) java.util.Map.put}.
      * This method is created with functions that operate through side-effects in mind.</p>
      *
-     * <p>Equivalent in effect to {@link Optional#ofNullable(I) Optional.ofNullable(}{@code input}{@link
-     * Optional#ofNullable(I) )}{@link Optional#map(Function) .map(}{@code sideEffectFunction}{@link
-     * Optional#map(Function) )}{@link Optional#orElse(O) .orElse(null)}. Would be equivalent to
-     * {@link #returnDefaultIfNull(I, Function, O) returnDefaultIfNull(}{@code input, sideEffectFunction, }{@link
-     * #returnDefaultIfNull(I, Function, O) null)},
+     * <p>Equivalent in effect to {@link Optional#ofNullable(Object) Optional.ofNullable(}{@code input}{@link
+     * Optional#ofNullable(Object) )}{@link Optional#map(Function) .map(}{@code sideEffectFunction}{@link
+     * Optional#map(Function) )}{@link Optional#orElse(Object) .orElse(null)}. Would be equivalent to
+     * {@link #returnDefaultIfNull(Object, Function, Object) returnDefaultIfNull(}{@code
+     * input, sideEffectFunction, }{@link #returnDefaultIfNull(Object, Function, Object) null)},
      * except that the {@code defaultOutput} argument of that method is not advised to be {@code null}.</p>
      *
      * @param   input   the input that might be {@code null}
@@ -358,7 +359,7 @@ public class NullnessUtils {
     /**
      * Checks if {@code input} contains another object that is {@code null}.
      * Supports reference arrays (arrays that are or are subclasses of {@code Object[]})
-     * and implementers of {@link Iterable}, {@link Map}, and {@link Map.Entry}, as well as {@link Optional}.
+     * and implementers of {@link Iterable}, {@link Map}, and {@link Entry}, as well as {@link Optional}.
      * If the {@code recurse == true}, then this function
      * (or a more specialized one when relevant) is called recursively on each contained object.
      * If {@code recurse == null}, it defaults to false;

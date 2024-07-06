@@ -1,4 +1,4 @@
-import java.awt.Point;
+import java.awt.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +10,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.cb2384.corutils.NullnessUtils;
-import org.cb2384.corutils.StringUtils;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MainTest {
     /*@Test
@@ -95,28 +94,31 @@ public class MainTest {
                 NullnessUtils.returnDefaultIfNull(Integer.TYPE, Long.TYPE));
         
         Assertions.assertEquals(BigInteger.ZERO,
-                NullnessUtils.returnDefaultIfNull(bigInts, List::getFirst, BigInteger.ZERO));
+                NullnessUtils.returnDefaultIfNull(bigInts, list -> list.get(0), BigInteger.ZERO));
         String legallyNotChina = Locale.TAIWAN.getCountry();
         Assertions.assertEquals(legallyNotChina,
                 NullnessUtils.returnDefaultIfNull(null, Locale::getCountry, legallyNotChina));
         
         Assertions.assertEquals(BigInteger.ZERO,
-                NullnessUtils.generateDefaultIfNull(null, bigInts::getFirst));
+                NullnessUtils.generateDefaultIfNull(null, () -> bigInts.get(0)));
         Assertions.assertEquals(legallyNotChina,
                 NullnessUtils.generateDefaultIfNull(Locale.TAIWAN, Locale::getDefault).getCountry());
         
         StringBuilder testSB = new StringBuilder("test");
         Assertions.assertEquals(testSB.toString(),
                 NullnessUtils.generateDefaultIfNull(testSB, StringBuilder::toString, System.out::toString));
-        Assertions.assertEquals(BigInteger.valueOf(5),
-                NullnessUtils.generateDefaultIfNull(null, BigInteger::valueOf, bigInts::getLast));
+        Assertions.assertEquals(BigInteger.valueOf(5), NullnessUtils.generateDefaultIfNull(
+                null,
+                BigInteger::valueOf,
+                () -> bigInts.get(bigInts.size() - 1)
+        ));
         
         Set<BigInteger> testSet = Arrays.stream(
                         new BigInteger[]{BigInteger.ONE, BigInteger.ZERO, BigInteger.TEN})
                 .collect(Collectors.toCollection(HashSet::new));
         NullnessUtils.applyIfNonNull(BigInteger.valueOf(2), testSet::add);
         Assertions.assertEquals(4, testSet.size());
-        NullnessUtils.applyIfNonNull(null, (Consumer<? super BigInteger>) bigInts::addFirst);
+        NullnessUtils.applyIfNonNull(null, (Consumer<? super BigInteger>) x -> bigInts.add(0, x));
         Assertions.assertEquals(forTest.length, bigInts.size());
         
         Assertions.assertSame(null,

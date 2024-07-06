@@ -6,7 +6,7 @@ import org.checkerframework.dataflow.qual.*;
 /**
  * An interface designating a context for a {@link ThreeValued} logic structure.
  * In Three-Valued Logic (3VL or TVL) there exists an additional value between the normal
- * {@link Boolean} true and false. However, what this value represents depends on the context &mdash
+ * {@link Boolean} true and false. However, what this value represents depends on the context&mdash;
  * that, is, dependent upon the implementation of this interface. It is up to the implementation
  * whether to accept {@code null} inputs for the operations or not, but whichever way it is,
  * it should be <i>consistent</i> and <i>documented</i>.
@@ -40,10 +40,11 @@ public interface ThreeValuedContext<T extends ThreeValued> {
     @NonNull T and(T left, T right);
     
     /**
-     * A logical nand within the rules of this context.
+     * <p>A logical nand within the rules of this context.</p>
      *
-     * @implNote    The default implementation calls {@link #not not(}{@link #and and(}{@code left, right}{@link
-     *              #and )}{@link #not )}; it should be overridden should different behaviour be desired.
+     * <p>Implementation Note:  The default implementation calls {@link #not not(}{@link #and and(}{@code
+     *                          left, right}{@link #and )}{@link #not )}; it should be overridden should
+     *                          different behaviour be desired.</p>
      *
      * @param   left    the left-hand {@link ThreeValued} value
      *
@@ -72,10 +73,11 @@ public interface ThreeValuedContext<T extends ThreeValued> {
     @NonNull T or(T left, T right);
     
     /**
-     * A logical nor within the rules of this context.
+     * <p>A logical nor within the rules of this context.</p>
      *
-     * @implNote    The default implementation calls {@link #not not(}{@link #or or(}{@code left, right}{@link
-     *              #or )}{@link #not )}; it should be overridden should different behaviour be desired.
+     * <p>Implementation Note:  The default implementation calls {@link #not not(}{@link #or or(}{@code
+     *                          left, right}{@link #or )}{@link #not )}; it should be overridden
+     *                          should different behaviour be desired.</p>
      *
      * @param   left    the left-hand {@link ThreeValued} value
      *
@@ -104,10 +106,11 @@ public interface ThreeValuedContext<T extends ThreeValued> {
     @NonNull T xor(T left, T right);
     
     /**
-     * A logical xnor within the rules of this context.
+     * <p>A logical xnor within the rules of this context.</p>
      *
-     * @implNote    The default implementation calls {@link #not not(}{@link #xor xor(}{@code left, right}{@link
-     *              #xor )}{@link #not )}; it should be overridden should different behaviour be desired.
+     * <p>Implementation Note:  The default implementation calls {@link #not not(}{@link #xor xor(}{@code
+     *                          left, right}{@link #xor )}{@link #not )};
+     *                          it should be overridden should different behaviour be desired.</p>
      *
      * @param   left    the left-hand {@link ThreeValued} value
      *

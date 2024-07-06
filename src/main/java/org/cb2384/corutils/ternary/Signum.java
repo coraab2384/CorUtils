@@ -223,17 +223,18 @@ public enum Signum
     }
     
     /**
-     * Similar in effect to {@link Math#signum(double) Math.signum(}{@code value}{@link Number#doubleValue()
+     * <p>Similar in effect to {@link Math#signum(double) Math.signum(}{@code value}{@link Number#doubleValue()
      * .doubleValue()}{@link Math#signum(double) )}, but returns a {@link Signum}
-     * enum constant instead of a primitive.
+     * enum constant instead of a primitive.</p>
      *
-     * @implNote    {@link Number#doubleValue()} is used because it has the highest range of supported values
-     *              out of the functions offered from the abstract superclass {@link Number}.
-     *              But as that is an abstract class, some other implementation (not one of the main Java ones)
-     *              might throw errors that are not known about here. Also, because {@code double}s have
-     *              the possibility of a {@code NaN} value, that will also throw an error if it is returned
-     *              by {@link Number#doubleValue()}. To return {@code null} instead of throwing an error, see
-     *              {@link #valueOfNaNOrUnsafe}
+     * <p>Implementation Note:  {@link Number#doubleValue()} is used because it has the highest range of
+     *                          supported values out of the functions offered from the abstract superclass
+     *                          {@link Number}. But as that is an abstract class, some other implementation
+     *                          (not one of the main Java ones) might throw errors that are not known about
+     *                          here. Also, because {@code double}s have the possibility of a {@code NaN}
+     *                          value, that will also throw an error if it is returned by {@link
+     *                          Number#doubleValue()}. To return {@code null} instead of throwing an error,
+     *                          see {@link #valueOfNaNOrUnsafe}</p>
      *
      * @param   value   the {@link Number} to get the signum of
      *
@@ -254,16 +255,16 @@ public enum Signum
     }
     
     /**
-     * Similar in effect to {@link Math#signum(double) Math.signum(}{@code value}{@link Number#doubleValue()
+     * <p>Similar in effect to {@link Math#signum(double) Math.signum(}{@code value}{@link Number#doubleValue()
      * .doubleValue()}{@link Math#signum(double) )}, but returns a {@link Signum}
      * enum constant instead of a primitive. Unlike {@link #valueOf(Number)}, this function can return
      * {@code null} in the case that the input value is itself {@code null} or something else that would
-     * throw an {@link ArithmeticException}&mdash such as {@code NaN}.
+     * throw an {@link ArithmeticException}&mdash;such as {@code NaN}.</p>
      *
-     * @implNote    {@link Number#doubleValue()} is used because it has the highest range of supported values
-     *              out of the functions offered from the abstract superclass {@link Number}.
-     *              But as that is an abstract class, some other implementation (not one of the main Java ones)
-     *              might throw errors that are not known about here.
+     * <p>Implementation Note:  {@link Number#doubleValue()} is used because it has the highest range of
+     *                          supported values out of the functions offered from the abstract superclass
+     *                          {@link Number}. But as that is an abstract class, some other implementation
+     *                          (not one of the main Java ones) might throw errors that are not known about here.</p>
      *
      * @param   value   the {@link Number} to get the signum of
      *

@@ -51,10 +51,12 @@ public interface BooleanValuedContext<T extends ThreeValued> {
     boolean and(T left, T right);
     
     /**
-     * Performs a logical nand ({@code &} or {@code &&} followed by a not) on {@code left} and {@code right}.
+     * <p>Performs a logical nand ({@code &} or {@code &&} followed by a not) on {@code left} and {@code right}.</p>
      *
-     * @implNote    The default implementation calls {@code !}{@link #and and(}{@code left, right}{@link #and )};
-     *              it should be overridden should different behavior be desired.
+     * <p>Implementation Note:  The default implementation calls {@code !}{@link #and and(}{@code
+     *                          left, right}{@link #and )};
+     *                          it should be overridden should different behavior be desired.</p>
+     *
      *
      * @param   left    the left-hand argument
      *
@@ -83,10 +85,11 @@ public interface BooleanValuedContext<T extends ThreeValued> {
     boolean or(T left, T right);
     
     /**
-     * Performs a logical nor ({@code |} or {@code ||} followed by a not) on {@code left} and {@code right}.
+     * <p>Performs a logical nor ({@code |} or {@code ||} followed by a not) on {@code left} and {@code right}.</p>
      *
-     * @implNote    The default implementation calls {@code !}{@link #or or(}{@code left, right}{@link #or )};
-     *              it should be overridden should different behavior be desired.
+     * <p>Implementation Note:  The default implementation calls {@code !}{@link #or or(}{@code
+     *                          left, right}{@link #or )};
+     *                          it should be overridden should different behavior be desired.
      *
      * @param   left    the left-hand argument
      *
@@ -116,7 +119,7 @@ public interface BooleanValuedContext<T extends ThreeValued> {
     
     /**
      * Returns the boolean truth value of the logical statement {@code precondition -> postcondition},
-     * an if-{@code precondition}&ndash then-{@code postcondition} statement.
+     * an if-{@code precondition}&ndash;then-{@code postcondition} statement.
      *
      * @param   precondition    the left argument, the one before the implies arrow
      *

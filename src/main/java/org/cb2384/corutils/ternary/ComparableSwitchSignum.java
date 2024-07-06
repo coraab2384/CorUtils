@@ -32,7 +32,7 @@ public interface ComparableSwitchSignum<T extends ComparableSwitchSignum<?>>
      * @throws  NullPointerException    if {@code that == null} and the original {@link #compareTo(Object) compareTo}
      *                                  implementation does not support nulls (which most don't)
      *
-     * @throws  ClassCastException  if the type of {@code that} prevents it from being compared to {@code this}
+     * @throws  ClassCastException  if the type of {@code that} prevents it from being compared to this
      */
     @Pure
     default byte compareTob(
@@ -53,7 +53,7 @@ public interface ComparableSwitchSignum<T extends ComparableSwitchSignum<?>>
      * @throws  NullPointerException    if {@code that == null} and the original {@link #compareTo}
      *                                  implementation does not support nulls (which most don't)
      *
-     * @throws  ClassCastException  if the type of {@code that} prevents it from being compared to {@code this}
+     * @throws  ClassCastException  if the type of {@code that} prevents it from being compared to this
      */
     @Pure
     default @NonNull Signum compare(

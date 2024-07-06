@@ -1,5 +1,7 @@
 /**
- * <p>Interfaces and classes for dealing with three-valued-logic. The main class here is
+ * <b>Interfaces and classes for dealing with three-valued-logic.</b>
+ *
+ * <p>The main class here is
  * {@link org.cb2384.corutils.ternary.Ternary}, but boolean and three-valued contexts are also provided
  * ({@link org.cb2384.corutils.ternary.ThreeValuedContext}, {@link org.cb2384.corutils.ternary.BooleanValuedContext},
  * and {@link org.cb2384.corutils.ternary.KnownDefaultBooleanContext}); these can be thought of as being to a
